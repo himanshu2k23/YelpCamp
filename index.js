@@ -21,9 +21,17 @@ async function main() {
 app.set('view engine','ejs');
 
 //app.GET
+//INDEX
 app.get('/campgrounds', async (req,res)=>{
     const campgrounds=await Campground.find({});
     res.render(path.join(__dirname,'views/index.ejs'),{campgrounds})
+})
+
+//DETAILS
+app.get('/campgrounds/:id', async (req,res)=>{
+    const {id}=req.params;
+    const campgrounds=await Campground.findById(id);
+    res.render(path.join(__dirname,'views/details.ejs'),{campgrounds})
 })
 
 //app.LISTEN
