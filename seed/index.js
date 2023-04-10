@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const { title } = require('process');
 const cities = require(path.join(__dirname,'/cities.js'));
 const { places,descriptors }= require(path.join(__dirname,'/seedhelpers.js'));
+//console.log({places,descriptors});
 const Campground = require(path.join(__dirname, '../models/campground'));
 //CONNECTING DATABASE
 console.log(main());
@@ -20,15 +21,16 @@ async function main() {
         })
 }
 
-const sample = array => Math.floor(Math.random() * array.lenght);
+const sample = array => array[Math.floor(Math.random() * array.length)];
+//console.log(sample([1,2,3,4]));
 
 const seedDB = async () => {
     await Campground.deleteMany({});
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 20; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
-        const camp = Campground({
+        const camp = new Campground({
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
-            title: `${places[sample]} ${descriptors[sample]} `
+            title: `${sample(descriptors)} ${sample(places)}`
         })
         await camp.save();
     }

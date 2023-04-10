@@ -20,7 +20,11 @@ async function main() {
 //app.SET
 app.set('view engine','ejs');
 
-
+//app.GET
+app.get('/campgrounds', async (req,res)=>{
+    const campgrounds=await Campground.find({});
+    res.render(path.join(__dirname,'views/index.ejs'),{campgrounds})
+})
 
 //app.LISTEN
 app.listen( '3001', ()=>{
