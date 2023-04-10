@@ -31,12 +31,12 @@ app.use(express.urlencoded({extends:true}))
 //INDEX
 app.get('/campgrounds', async (req,res)=>{
     const campgrounds=await Campground.find({});
-    res.render(path.join(__dirname,'views/index.ejs'),{campgrounds,pageTitle:"Index"})
+    res.render(path.join(__dirname,'views/campground/index.ejs'),{campgrounds,pageTitle:"Index"})
 })
 
 //POST
 app.get('/campgrounds/new', (req,res)=>{
-    res.render(path.join(__dirname,'views/new.ejs'),{pageTitle:"Add"})
+    res.render(path.join(__dirname,'views/campground/new.ejs'),{pageTitle:"Add"})
 })
 app.post('/campgrounds', async (req,res)=>{
     //console.log(req.body)
@@ -49,14 +49,14 @@ app.post('/campgrounds', async (req,res)=>{
 app.get('/campgrounds/:id', async (req,res)=>{
     const {id}=req.params;
     const campgrounds=await Campground.findById(id);
-    res.render(path.join(__dirname,'views/details.ejs'),{campgrounds,pageTitle:"Details"})
+    res.render(path.join(__dirname,'views/campground/details.ejs'),{campgrounds,pageTitle:"Details"})
 })
 
 //EDIT 
 app.get('/campgrounds/:id/edit', async (req,res)=>{
     const {id}=req.params;
     const campgrounds=await Campground.findById(id);
-    res.render(path.join(__dirname,'views/edit.ejs'),{campgrounds,pageTitle:"Edit"})
+    res.render(path.join(__dirname,'views/campground/edit.ejs'),{campgrounds,pageTitle:"Edit"})
 })
 app.patch('/campgrounds/:id/edit', async (req,res)=>{
     //console.log(req.body)
