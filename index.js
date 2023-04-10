@@ -5,6 +5,7 @@ const path= require('path');
 const mongoose=require('mongoose')
 const methodOverride=require('method-override');
 const Campground=require(path.join(__dirname,'/models/campground'))
+const engine=require('ejs-mate');
 //CONNECTING DATABASE
 console.log(main());
 async function main() {
@@ -19,6 +20,7 @@ async function main() {
 }
 
 //app.SET
+app.engine('ejs',engine);
 app.set('view engine','ejs');
 
 //app.USE
@@ -29,12 +31,12 @@ app.use(express.urlencoded({extends:true}))
 //INDEX
 app.get('/campgrounds', async (req,res)=>{
     const campgrounds=await Campground.find({});
-    res.render(path.join(__dirname,'views/index.ejs'),{campgrounds})
+    res.render(path.join(__dirname,'views/index.ejs'),{campgrounds,pageTitle:"Index"})
 })
 
 //POST
 app.get('/campgrounds/new', (req,res)=>{
-    res.render(path.join(__dirname,'views/new.ejs'))
+    res.render(path.join(__dirname,'views/new.ejs'),{pageTitle:"Add"})
 })
 app.post('/campgrounds', async (req,res)=>{
     //console.log(req.body)
@@ -47,14 +49,14 @@ app.post('/campgrounds', async (req,res)=>{
 app.get('/campgrounds/:id', async (req,res)=>{
     const {id}=req.params;
     const campgrounds=await Campground.findById(id);
-    res.render(path.join(__dirname,'views/details.ejs'),{campgrounds})
+    res.render(path.join(__dirname,'views/details.ejs'),{campgrounds,pageTitle:"Details"})
 })
 
 //EDIT 
 app.get('/campgrounds/:id/edit', async (req,res)=>{
     const {id}=req.params;
     const campgrounds=await Campground.findById(id);
-    res.render(path.join(__dirname,'views/edit.ejs'),{campgrounds})
+    res.render(path.join(__dirname,'views/edit.ejs'),{campgrounds,pageTitle:"Edit"})
 })
 app.patch('/campgrounds/:id/edit', async (req,res)=>{
     //console.log(req.body)
