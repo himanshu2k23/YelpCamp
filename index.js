@@ -13,7 +13,7 @@ async function main() {
         })
         .catch(err => {
             console.log("ERROR!!!! DATABASE IS NOT CONNECTED")
-            console.log(err)
+            //console.log(err)
         })
 }
 
@@ -32,6 +32,12 @@ app.get('/campgrounds/:id', async (req,res)=>{
     const {id}=req.params;
     const campgrounds=await Campground.findById(id);
     res.render(path.join(__dirname,'views/details.ejs'),{campgrounds})
+})
+
+//NEW
+app.get('/new', async (req,res)=>{
+    res.send("blah");
+    res.render(path.join(__dirname,'views/new.ejs'))
 })
 
 //app.LISTEN
