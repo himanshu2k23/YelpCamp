@@ -27,6 +27,11 @@ app.get('/campgrounds', async (req,res)=>{
     res.render(path.join(__dirname,'views/index.ejs'),{campgrounds})
 })
 
+//NEW
+app.get('campgrounds/new', async (req,res)=>{
+    res.render(path.join(__dirname,'views/new.ejs'))
+})
+
 //DETAILS
 app.get('/campgrounds/:id', async (req,res)=>{
     const {id}=req.params;
@@ -34,11 +39,7 @@ app.get('/campgrounds/:id', async (req,res)=>{
     res.render(path.join(__dirname,'views/details.ejs'),{campgrounds})
 })
 
-//NEW
-app.get('/new', async (req,res)=>{
-    res.send("blah");
-    res.render(path.join(__dirname,'views/new.ejs'))
-})
+
 
 //app.LISTEN
 app.listen( '3001', ()=>{
