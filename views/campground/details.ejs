@@ -3,11 +3,16 @@
     <h1>
         <%= campgrounds.title %>
     </h1>
+    <img src="<%= campgrounds.img  %>" alt="">
     <h2>
         <%= campgrounds.location %>
     </h2>
-    <h3>Id: <%= campgrounds._id %>
+    <p><%= campgrounds.description  %></p>
+    <h3>
+        Id: <%= campgrounds._id %> <br>
+        Price: <%= campgrounds.price  %>
     </h3>
+
     <br>
     <a href="/campgrounds">index</a>
     <br>
