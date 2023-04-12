@@ -5,7 +5,7 @@
         Edit Campground
     </h1>
     <div class="col-6 offset-3">
-        <form action="/campgrounds" method="post">
+        <form method="post" action="/campgrounds/<%= campgrounds._id  %>/edit?_method=patch" >
             <div class="my-1">
                 <label class="form-label" for="title">Title</label>
                 <input class="form-control" type="text" id="title" name="title" placeholder="" value="<%= campgrounds.title %>">

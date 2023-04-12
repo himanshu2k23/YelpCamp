@@ -63,7 +63,7 @@ app.get('/campgrounds/:id/edit', async (req,res)=>{
     res.render(path.join(__dirname,'views/campground/edit.ejs'),{campgrounds,pageTitle:"Edit"})
 })
 app.patch('/campgrounds/:id/edit', async (req,res)=>{
-    //console.log(req.body)
+    console.log(req.body)
     const {id}=req.params;
     const newCampground=await Campground.findByIdAndUpdate(id,req.body);
     res.redirect(`/campgrounds/${newCampground._id}`);
@@ -76,9 +76,6 @@ app.delete('/campgrounds/:id/delete', async (req,res)=>{
     const newCampground=await Campground.findByIdAndDelete(id);
     res.redirect(`/campgrounds`);
 })
-
-
-
 
 
 //app.LISTEN
