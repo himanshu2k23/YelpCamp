@@ -1,12 +1,40 @@
 <% layout('/layout/boilerplate.ejs') %>
 
-    <h1>Edit</h1>
-    <form action="/campgrounds/<%= campgrounds._id %>/edit?_method=PATCH " method="post">
-        <label for="title">Enter the title</label>
-        <input type="text" id="title" name="title" value="<%= campgrounds.title  %>">
-        <label for="location">Enter the location</label>
-        <input type="text" id="location" name="location" value="<%= campgrounds.location %>">
-        <button>Update</button>
-    </form>
-    <br>
-    <a href="/campgrounds">back to index</a>
+<div class="row">
+    <h1 class="text-center">
+        Edit Campground
+    </h1>
+    <div class="col-6 offset-3">
+        <form action="/campgrounds" method="post">
+            <div class="my-1">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="title" placeholder="" value="<%= campgrounds.title %>">
+            </div>
+
+            <div class="my-1">
+                <label class="form-label" for="location">Location</label>
+                <input class="form-control" type="text" id="location" name="location" placeholder="" value="<%= campgrounds.location %>">
+            </div>
+
+            <div class="my-1">
+                <label class="form-label" for="img">Image URL</label>
+                <input class="form-control" type="text" id="img" name="img" placeholder="" value="<%= campgrounds.img %>">
+            </div>
+
+            <div class="input-group mt-3 mb-2">
+                <span class="input-group-text" id="basic-addon1">$</span>
+                <input name="price" type="text" class="form-control" placeholder="0.00" aria-label="Price" aria-describedby="basic-addon1" value="<%= campgrounds.price %>">
+            </div>
+
+            <div class="my-1">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="description"><%= campgrounds.description %></textarea>
+            </div>
+
+            <div class="my-2">
+                <button class="btn btn-success ">Submit</button>
+            </div>
+
+        </form>
+    </div>
+
