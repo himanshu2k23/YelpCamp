@@ -1,22 +1,25 @@
 <% layout('/layout/boilerplate.ejs') %>
 
-    <h1>
-        <%= campgrounds.title %>
-    </h1>
-    <img src="<%= campgrounds.img  %>" alt="">
-    <h2>
-        <%= campgrounds.location %>
-    </h2>
-    <p><%= campgrounds.description  %></p>
-    <h3>
-        Price: <%= campgrounds.price  %>
-    </h3>
+    <div class="row my-3">
+        <div class="col-6 offset-3">
+            <div class="card" >
+                <img src="<%= campgrounds.img  %>" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title"><%= campgrounds.title  %></h5>
+                    <p class="card-text"><%= campgrounds.description %></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-muted"> <% campgrounds.location %></li>
+                    <li class="list-group-item ">$<%= campgrounds.price %>/night</li>
+                </ul>
+                <div class="card-body">
+                    <button class="btn btn-info card-link" href="/campgrounds/<%= campgrounds._id %>/edit">Edit</button>
+                    <form class="d-inline" action="/campgrounds/<%= campgrounds._id %>/delete?_method=delete" method="post">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div> 
+    </div>
 
-    <br>
-    <a href="/campgrounds">index</a>
-    <br>
-    <a href="/campgrounds/<%= campgrounds._id %>/edit">edit</a>
-    <br>
-    <form action="/campgrounds/<%= campgrounds._id %>/delete?_method=delete" method="post">
-        <button>delete</button>
-    </form>
+   

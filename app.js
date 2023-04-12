@@ -47,9 +47,13 @@ app.post('/campgrounds', async (req,res)=>{
 
 //DETAILS
 app.get('/campgrounds/:id', async (req,res)=>{
-    const {id}=req.params;
-    const campgrounds=await Campground.findById(id);
-    res.render(path.join(__dirname,'views/campground/details.ejs'),{campgrounds,pageTitle:"Details"})
+    try {
+        const {id}=req.params;
+        const campgrounds=await Campground.findById(id);
+        res.render(path.join(__dirname,'views/campground/details.ejs'),{campgrounds,pageTitle:"Details"})
+    } catch (error) {
+        console.log(error);
+    } 
 })
 
 //EDIT 
