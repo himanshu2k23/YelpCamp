@@ -5,30 +5,33 @@
             New Campground
         </h1>
         <div class="col-6 offset-3">
-            <form action="/campgrounds" method="post">
+            <form action="/campgrounds" method="post" class="needs-validation" novalidate>
                 <div class="my-1">
                     <label class="form-label" for="title">Title</label>
-                    <input class="form-control" type="text" id="title" name="title" placeholder="">
+                    <input class="form-control" type="text" id="title" name="title" placeholder="" required>
+                    <div class="valid-feedback">
+                        Look Good!
+                    </div>
                 </div>
 
                 <div class="my-1">
                     <label class="form-label" for="location">Location</label>
-                    <input class="form-control" type="text" id="location" name="location" placeholder="">
+                    <input class="form-control" type="text" id="location" name="location" placeholder="" required>
                 </div>
 
                 <div class="my-1">
                     <label class="form-label" for="img">Image URL</label>
-                    <input class="form-control" type="text" id="img" name="img" placeholder="">
+                    <input class="form-control" type="text" id="img" name="img" placeholder="" required>
                 </div>
 
                 <div class="input-group mt-3 mb-2">
                     <span class="input-group-text" id="basic-addon1">$</span>
-                    <input name="price" type="text" class="form-control" placeholder="0.00" aria-label="Price" aria-describedby="basic-addon1">
+                    <input name="price" type="text" class="form-control" placeholder="0.00" aria-label="Price" aria-describedby="basic-addon1" required>
                 </div>
 
                 <div class="my-1">
                     <label class="form-label" for="description">Description</label>
-                    <textarea class="form-control" type="text" id="description" name="description"></textarea>
+                    <textarea class="form-control" type="text" id="description" name="description" required></textarea>
                 </div>
 
                 <div class="my-2">
@@ -38,3 +41,4 @@
             </form>
         </div>
     </div>
+
