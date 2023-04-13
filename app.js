@@ -7,7 +7,9 @@ const methodOverride = require('method-override');
 const Campground = require(path.join(__dirname, '/models/campground'));
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
+const {campgroundSchema} =require('./schema');
 const engine = require('ejs-mate');
+const Joi=require('joi');
 //CONNECTING DATABASE
 console.log({ catchAsync })
 console.log(main());
@@ -20,6 +22,20 @@ async function main() {
             console.log("ERROR!!!! DATABASE IS NOT CONNECTED")
             //console.log(err)
         })
+}
+
+//SCHEMA VALIDATION SERVER SIDE
+const validateCampground= (req,res,next)=>{
+    console.log(req.body)
+    const {error}=campgroundSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(errorLine => errorLine.message).join(', ')
+        throw new ExpressError(msg,400);
+    }
+    else{
+        next(); 
+    }
+
 }
 
 //app.SET
@@ -41,7 +57,7 @@ app.get('/campgrounds', catchAsync(async (req, res) => {
 app.get('/campgrounds/new', (req, res) => {
     res.render(path.join(__dirname, 'views/campground/new.ejs'), { pageTitle: "Add" })
 })
-app.post('/campgrounds', catchAsync(async (req, res) => {
+app.post('/campgrounds',validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)
     const newCampground = new Campground(req.body);
     await newCampground.save();
@@ -61,7 +77,7 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
     const campgrounds = await Campground.findById(id);
     res.render(path.join(__dirname, 'views/campground/edit.ejs'), { campgrounds, pageTitle: "Edit" })
 }))
-app.patch('/campgrounds/:id/edit', catchAsync(async (req, res) => {
+app.patch('/campgrounds/:id/edit',validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)
     const { id } = req.params;
     const newCampground = await Campground.findByIdAndUpdate(id, req.body);
