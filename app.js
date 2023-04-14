@@ -26,7 +26,7 @@ async function main() {
 
 //SCHEMA VALIDATION SERVER SIDE
 const validateCampground= (req,res,next)=>{
-    console.log(req.body)
+    //console.log(req.body)
     const {error}=campgroundSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(errorLine => errorLine.message).join(', ')
