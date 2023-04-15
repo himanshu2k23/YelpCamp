@@ -39,6 +39,7 @@ const validateCampground= (req,res,next)=>{
 
 }
 
+
 //app.SET
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
