@@ -4,7 +4,8 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose')
 const methodOverride = require('method-override');
-const Campground = require(path.join(__dirname, '/models/campground'));
+const Campground = require('./models/campground');
+const Review = require('./models/review')
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
 const {campgroundSchema} =require('./schema');
@@ -90,6 +91,17 @@ app.delete('/campgrounds/:id/delete', catchAsync(async (req, res) => {
     const { id } = req.params;
     const newCampground = await Campground.findByIdAndDelete(id);
     res.redirect(`/campgrounds`);
+}))
+
+//POST REVIEW
+app.post('/campgrounds/:id/review', catchAsync(async(req,res)=>{
+    const {id}=req.params;
+    const campground=await Campground.findById(id);
+    const review= new Review(req.body.review);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+    res.redirect(`/campgrounds/${id}`);
 }))
 
 //ERROR HANDLER
