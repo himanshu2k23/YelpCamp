@@ -59,7 +59,7 @@ app.get('/campgrounds/new', (req, res) => {
 })
 app.post('/campgrounds',validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)
-    const newCampground = new Campground(req.body);
+    const newCampground = new Campground(req.body.campground);
     await newCampground.save();
     res.redirect(`/campgrounds/${newCampground._id}`);
 }))
@@ -80,7 +80,7 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
 app.patch('/campgrounds/:id/edit',validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)
     const { id } = req.params;
-    const newCampground = await Campground.findByIdAndUpdate(id, req.body);
+    const newCampground = await Campground.findByIdAndUpdate(id, req.body.campground);
     res.redirect(`/campgrounds/${newCampground._id}`);
 }))
 

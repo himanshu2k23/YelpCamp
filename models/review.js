@@ -1,10 +1,10 @@
 const { number } = require('joi');
 const mongoose=require('mongoose');
-const Schema=mongoose.schema;
+const Schema=mongoose.Schema;
 
 const reviewSchema= new Schema({
       body:String,
-      rating:number
+      rating:Number
 });
 
 module.exports = mongoose.model('Review',reviewSchema);
