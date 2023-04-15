@@ -12,6 +12,7 @@ const {campgroundSchema} =require('./schema');
 const {reviewSchema} =require('./schema');
 const engine = require('ejs-mate');
 const Joi=require('joi');
+const campground = require('./models/campground');
 //CONNECTING DATABASE
 console.log({ catchAsync })
 console.log(main());
@@ -80,15 +81,16 @@ app.post('/campgrounds',validateCampground, catchAsync(async (req, res) => {
 //DETAILS
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
-    const campgrounds = await Campground.findById(id);
-    res.render(path.join(__dirname, 'views/campground/details.ejs'), { campgrounds, pageTitle: "Details" })
+    const campground = await Campground.findById(id).populate('reviews');
+    //console.log(campground);
+    res.render(path.join(__dirname, 'views/campground/details.ejs'), { campground, pageTitle: "Details" })
 }))
 
 //EDIT 
 app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const campgrounds = await Campground.findById(id);
-    res.render(path.join(__dirname, 'views/campground/edit.ejs'), { campgrounds, pageTitle: "Edit" })
+    const campground = await Campground.findById(id);
+    res.render(path.join(__dirname, 'views/campground/edit.ejs'), { campground, pageTitle: "Edit" })
 }))
 app.patch('/campgrounds/:id/edit',validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)

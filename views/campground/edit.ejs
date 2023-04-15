@@ -5,30 +5,30 @@
         Edit Campground
     </h1>
     <div class="col-6 offset-3">
-        <form method="post" action="/campgrounds/<%= campgrounds._id  %>/edit?_method=patch" class="needs-validation" novalidate >
+        <form method="post" action="/campgrounds/<%= campground._id  %>/edit?_method=patch" class="needs-validation" novalidate >
             <div class="my-1">
                 <label class="form-label" for="title">Title</label>
-                <input class="form-control" type="text" id="title" name="campground[title]" placeholder="" value="<%= campgrounds.title %>" required>
+                <input class="form-control" type="text" id="title" name="campground[title]" placeholder="" value="<%= campground.title %>" required>
             </div>
 
             <div class="my-1">
                 <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="campground[location]" placeholder="" value="<%= campgrounds.location %>" required>
+                <input class="form-control" type="text" id="location" name="campground[location]" placeholder="" value="<%= campground.location %>" required>
             </div>
 
             <div class="my-1">
                 <label class="form-label" for="img">Image URL</label>
-                <input class="form-control" type="text" id="img" name="campground[img]" placeholder="" value="<%= campgrounds.img %>" required>
+                <input class="form-control" type="text" id="img" name="campground[img]" placeholder="" value="<%= campground.img %>" required>
             </div>
 
             <div class="input-group mt-3 mb-2">
                 <span class="input-group-text" id="basic-addon1">$</span>
-                <input name="campground[price]" type="text" class="form-control" placeholder="0.00" aria-label="Price" aria-describedby="basic-addon1" value="<%= campgrounds.price %>" required>
+                <input name="campground[price]" type="text" class="form-control" placeholder="0.00" aria-label="Price" aria-describedby="basic-addon1" value="<%= campground.price %>" required>
             </div>
 
             <div class="my-1">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description" name="campground[description]" required><%= campgrounds.description %></textarea>
+                <textarea class="form-control" type="text" id="description" name="campground[description]" required><%= campground.description %></textarea>
             </div>
 
             <div class="my-2">
