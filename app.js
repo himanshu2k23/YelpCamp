@@ -1,4 +1,4 @@
-//VARIABLE DECLARATION
+//CONST DECLARATION
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -12,7 +12,7 @@ const {campgroundSchema} =require('./schema');
 const {reviewSchema} =require('./schema');
 const engine = require('ejs-mate');
 const Joi=require('joi');
-const campground = require('./models/campground');
+const campgroundsRoute=require('./routes/campgrounds');
 //CONNECTING DATABASE
 console.log({ catchAsync })
 console.log(main());
@@ -25,19 +25,6 @@ async function main() {
             console.log("ERROR!!!! DATABASE IS NOT CONNECTED")
             //console.log(err)
         })
-}
-
-//SCHEMA VALIDATION SERVER SIDE
-const validateCampground= (req,res,next)=>{
-    //console.log(req.body)
-    const {error}=campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(errorLine => errorLine.message).join(', ')
-        throw new ExpressError(msg,400);
-    }
-    else{
-        next(); 
-    }
 }
 
 const validateReview= (req,res,next)=>{
@@ -60,52 +47,7 @@ app.set('view engine', 'ejs');
 app.use(methodOverride('_method'))
 app.use(express.urlencoded({ extends: true }))
 
-
-//INDEX
-app.get('/campgrounds', catchAsync(async (req, res) => {
-    const campgrounds = await Campground.find({});
-    res.render(path.join(__dirname, 'views/campground/index.ejs'), { campgrounds, pageTitle: "Index" })
-}))
-
-//POST
-app.get('/campgrounds/new', (req, res) => {
-    res.render(path.join(__dirname, 'views/campground/new.ejs'), { pageTitle: "Add" })
-})
-app.post('/campgrounds',validateCampground, catchAsync(async (req, res) => {
-    //console.log(req.body)
-    const newCampground = new Campground(req.body.campground);
-    await newCampground.save();
-    res.redirect(`/campgrounds/${newCampground._id}`);
-}))
-
-//DETAILS
-app.get('/campgrounds/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const campground = await Campground.findById(id).populate('reviews');
-    //console.log(campground);
-    res.render(path.join(__dirname, 'views/campground/details.ejs'), { campground, pageTitle: "Details" })
-}))
-
-//EDIT 
-app.get('/campgrounds/:id/edit', catchAsync(async (req, res, next) => {
-    const { id } = req.params;
-    const campground = await Campground.findById(id);
-    res.render(path.join(__dirname, 'views/campground/edit.ejs'), { campground, pageTitle: "Edit" })
-}))
-app.patch('/campgrounds/:id/edit',validateCampground, catchAsync(async (req, res) => {
-    //console.log(req.body)
-    const { id } = req.params;
-    const newCampground = await Campground.findByIdAndUpdate(id, req.body.campground);
-    res.redirect(`/campgrounds/${newCampground._id}`);
-}))
-
-//DELETE
-app.delete('/campgrounds/:id/delete', catchAsync(async (req, res) => {
-    //console.log(req.body)
-    const { id } = req.params;
-    const newCampground = await Campground.findByIdAndDelete(id);
-    res.redirect(`/campgrounds`);
-}))
+app.use('/campgrounds',campgroundsRoute);
 
 //POST REVIEW
 app.post('/campgrounds/:id/review',validateReview, catchAsync(async(req,res)=>{
