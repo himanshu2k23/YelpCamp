@@ -13,6 +13,7 @@ const {reviewSchema} =require('./schema');
 const engine = require('ejs-mate');
 const Joi=require('joi');
 const campgroundsRoute=require('./routes/campgrounds');
+const reviewRoute=require('./routes/review');
 //CONNECTING DATABASE
 console.log({ catchAsync })
 console.log(main());
@@ -27,17 +28,7 @@ async function main() {
         })
 }
 
-const validateReview= (req,res,next)=>{
-    //console.log(req.body)
-    const {error}=reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(errorLine => errorLine.message).join(', ')
-        throw new ExpressError(msg,400);
-    }
-    else{
-        next(); 
-    }
-}
+
 
 //app.SET
 app.engine('ejs', engine);
@@ -48,28 +39,12 @@ app.use(methodOverride('_method'))
 app.use(express.urlencoded({ extends: true }))
 
 app.use('/campgrounds',campgroundsRoute);
+app.use('/campgrounds/:id/review',reviewRoute);
 
-//POST REVIEW
-app.post('/campgrounds/:id/review',validateReview, catchAsync(async(req,res)=>{
-    const {id}=req.params;
-    const campground=await Campground.findById(id);
-    const review= new Review(req.body.review);
-    campground.reviews.push(review);
-    await review.save();
-    await campground.save();
-    res.redirect(`/campgrounds/${id}`);
-}))
-//DELETE REVIEW
-app.delete('/camgrounds/:id/review/:reviewId/delete', catchAsync(async(req,res)=>{
-    const {id,reviewId}=req.params;
-    await Campground.findByIdAndUpdate(id, {$pull:{reviews: reviewId}});
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/campgrounds/${id}`);
-}))
 
 //ERROR HANDLER
 app.all('*', (req, res, next) => {
-    next(new ExpressError('Page Not Found', '404'))
+    next(new ExpressError('Page Not Found', 404))
 })
 
 app.use((err, req, res, next) => {
