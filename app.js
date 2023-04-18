@@ -8,48 +8,63 @@ const Campground = require('./models/campground');
 const Review = require('./models/review')
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
-const {campgroundSchema} =require('./schema');
-const {reviewSchema} =require('./schema');
+const { campgroundSchema } = require('./schema');
+const { reviewSchema } = require('./schema');
 const engine = require('ejs-mate');
-const Joi=require('joi');
-const campgroundsRoute=require('./routes/campgrounds');
-const reviewRoute=require('./routes/review');
+const Joi = require('joi');
+const campgroundsRoute = require('./routes/campgrounds');
+const reviewRoute = require('./routes/review');
+const session = require('express-session');
+
+
+//SESSSION CONFIGRATION
+const sessionConfig = {
+    secret: "asecret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly:true,
+        expires: Date.now + ( 1000*60*60*24*7 ),
+        maxAge: 1000*60*60*24*7
+    }
+
+};
 //CONNECTING DATABASE
 console.log({ catchAsync })
 console.log(main());
 async function main() {
     await mongoose.connect('mongodb+srv://him:himanshu@cluster0.yfpx5hl.mongodb.net/?retryWrites=true&w=majority')
         .then(() => {
-            console.log("DATABASE CONNECTED!!!")
+            console.log("DATABASE CONNECTED!!!");
         })
         .catch(err => {
-            console.log("ERROR!!!! DATABASE IS NOT CONNECTED")
+            console.log("ERROR!!!! DATABASE IS NOT CONNECTED");
             //console.log(err)
         })
 }
 
-
-
-//app.SET
+//app.
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 
 //app.USE
-app.use(methodOverride('_method'))
-app.use(express.urlencoded({ extends: true }))
+app.use(session(sessionConfig));
+app.use(methodOverride('_method'));
+app.use(express.urlencoded({ extends: true }));
+app.use(express.static('./public'));
 
-app.use('/campgrounds',campgroundsRoute);
-app.use('/campgrounds/:id/review',reviewRoute);
+app.use('/campgrounds', campgroundsRoute);
+app.use('/campgrounds/:id/review', reviewRoute);
 
 
 //ERROR HANDLER
 app.all('*', (req, res, next) => {
-    next(new ExpressError('Page Not Found', 404))
+    next(new ExpressError('Page Not Found', 404));
 })
 
 app.use((err, req, res, next) => {
     const { message, statusCode } = err;
-    res.status(statusCode).render(path.join(__dirname, 'views/error.ejs'), { err,pageTitle:"ERROR" })
+    res.status(statusCode).render(path.join(__dirname, 'views/error.ejs'), { err, pageTitle: "ERROR" });
 })
 
 
