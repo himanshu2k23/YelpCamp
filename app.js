@@ -15,7 +15,7 @@ const Joi = require('joi');
 const campgroundsRoute = require('./routes/campgrounds');
 const reviewRoute = require('./routes/review');
 const session = require('express-session');
-
+const flash=require('connect-flash');
 
 //SESSSION CONFIGRATION
 const sessionConfig = {
@@ -52,7 +52,16 @@ app.use(session(sessionConfig));
 app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extends: true }));
 app.use(express.static('./public'));
+app.use(flash());
 
+//FLASH MIDDLEWARE
+app.use((req,res,next)=>{
+    res.locals.success=req.flash('success');
+    res.locals.error=req.flash('error');
+    next();
+})
+
+//CALLING ROUTES
 app.use('/campgrounds', campgroundsRoute);
 app.use('/campgrounds/:id/review', reviewRoute);
 
