@@ -42,6 +42,10 @@ router.get('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id).populate('reviews');
     //console.log(campground);
+    if (!campground) {
+        req.flash('error','Campground not found');
+        res.redirect('/campgrounds')        
+    }
     res.render('../views/campground/details.ejs', { campground, pageTitle: "Details" })
 }))
 
@@ -49,6 +53,10 @@ router.get('/:id', catchAsync(async (req, res) => {
 router.get('/:id/edit', catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
+    if (!campground) {
+        req.flash('error','Campground not found');
+        res.redirect('/campgrounds')        
+    }
     res.render('../views/campground/edit.ejs', { campground, pageTitle: "Edit" })
 }))
 router.patch('/:id/edit',validateCampground, catchAsync(async (req, res) => {
