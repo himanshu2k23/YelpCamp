@@ -14,10 +14,8 @@
 
 <body class="d-flex flex-column vh-100">
     <%- include('../partials/navbar.ejs') %>
-    <% if (success){%>
-    <%=success%>
-    <% } %>
     <main class="mt-5 container">
+        <%- include('../partials/flash.ejs') %>
         <%- body %>
     </main>
     <%- include('../partials/footer.ejs') %>
