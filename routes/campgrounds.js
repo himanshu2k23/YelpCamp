@@ -5,6 +5,8 @@ const ExpressError = require('../utils/ExpressError');
 const Campground = require('../models/campground');
 const {campgroundSchema} =require('../schema');
 const catchAsync = require('../utils/catchAsync');
+const flash = require('connect-flash');
+
 const validateCampground= (req,res,next)=>{
     //console.log(req.body)
     const {error}=campgroundSchema.validate(req.body);
@@ -20,7 +22,7 @@ const validateCampground= (req,res,next)=>{
 //INDEX
 router.get('/', catchAsync(async (req, res) => {
     const campgrounds = await Campground.find({});
-    res.render('../views/campground/index', { campgrounds, pageTitle: "Index" })
+    res.render('../views/campground/index.ejs', { campgrounds, pageTitle: "Index" })
 }))
 
 //POST
@@ -31,7 +33,7 @@ router.post('',validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)
     const newCampground = new Campground(req.body.campground);
     await newCampground.save();
-    res.flash('success','Successfully added a new campground');
+    req.flash('success','Successfully added a new campground');
     res.redirect(`/campgrounds/${newCampground._id}`);
 }))
 
@@ -53,7 +55,7 @@ router.patch('/:id/edit',validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)
     const { id } = req.params;
     const newCampground = await Campground.findByIdAndUpdate(id, req.body.campground);
-    res.flash('success','Successfully made changed the campground');
+    req.flash('success','Successfully made changes in the campground');
     res.redirect(`/campgrounds/${newCampground._id}`);
 }))
 
@@ -62,7 +64,7 @@ router.delete('/:id/delete', catchAsync(async (req, res) => {
     //console.log(req.body)
     const { id } = req.params;
     const newCampground = await Campground.findByIdAndDelete(id);
-    res.flash('success','Campground deleted');
+    req.flash('success','Campground deleted');
     res.redirect(`/campgrounds`);
 }))
 

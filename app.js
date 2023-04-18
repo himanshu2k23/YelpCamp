@@ -15,7 +15,7 @@ const Joi = require('joi');
 const campgroundsRoute = require('./routes/campgrounds');
 const reviewRoute = require('./routes/review');
 const session = require('express-session');
-const flash=require('connect-flash');
+const flash = require('connect-flash');
 
 //SESSSION CONFIGRATION
 const sessionConfig = {
@@ -23,11 +23,10 @@ const sessionConfig = {
     resave: false,
     saveUninitialized: true,
     cookie: {
-        httpOnly:true,
-        expires: Date.now + ( 1000*60*60*24*7 ),
-        maxAge: 1000*60*60*24*7
+        httpOnly: true,
+        expires: Date.now + (1000 * 60 * 60 * 24 * 7),
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
-
 };
 //CONNECTING DATABASE
 console.log({ catchAsync })
@@ -55,9 +54,9 @@ app.use(express.static('./public'));
 app.use(flash());
 
 //FLASH MIDDLEWARE
-app.use((req,res,next)=>{
-    res.locals.success=req.flash('success');
-    res.locals.error=req.flash('error');
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
     next();
 })
 
@@ -72,7 +71,7 @@ app.all('*', (req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-    const { message, statusCode } = err;
+    const { message , statusCode} = err;
     res.status(statusCode).render(path.join(__dirname, 'views/error.ejs'), { err, pageTitle: "ERROR" });
 })
 
