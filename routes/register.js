@@ -10,7 +10,12 @@ router.get('/',(req,res)=>{
     res.render('../views/campground/register', { pageTitle: "Add"})
 })
 router.post('/', catchAsync(async(req,res)=>{
-    res.send(req.body)
+    const {username,email,password}=req.body;
+    const user=new User({username,email});
+    const registerUser=await User.register(user,password);
+    //console.log({registerUser});
+    req.flash('success','Welcome to yelp camp');
+    res.redirect('/campgrounds');
 }))
 
 module.exports=router;

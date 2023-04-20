@@ -21,7 +21,6 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport=require('passport');
 const localStrategy=require('passport-local');
-
 //SESSSION CONFIGRATION
 const sessionConfig = {
     secret: "asecret",
@@ -34,8 +33,6 @@ const sessionConfig = {
     }
 };
 //CONNECTING DATABASE
-console.log(process.env.HIMANSHU)
-console.log({ catchAsync })
 console.log(main());
 async function main() {
     await mongoose.connect(process.env.MONGODB_URI)
