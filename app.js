@@ -16,7 +16,7 @@ const engine = require('ejs-mate');
 const Joi = require('joi');
 const campgroundsRoute = require('./routes/campgrounds');
 const reviewRoute = require('./routes/review');
-const registerRoute=require('./routes/register')
+const userRoute=require('./routes/user')
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport=require('passport');
@@ -76,7 +76,7 @@ app.use((req, res, next) => {
 //CALLING ROUTES
 app.use('/campgrounds', campgroundsRoute);
 app.use('/campgrounds/:id/review', reviewRoute);
-app.use('/register', registerRoute);
+app.use('/', userRoute);
 
 
 //ERROR HANDLER

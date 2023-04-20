@@ -6,10 +6,10 @@ const { userSchema } = require('../schema');
 const catchAsync = require('../utils/catchAsync');
 const flash = require('connect-flash');
 
-router.get('/', (req, res) => {
-    res.render('../views/campground/register', { pageTitle: "Add" })
+router.get('/register', (req, res) => {
+    res.render('../views/user/register', { pageTitle: "Register" })
 })
-router.post('/', catchAsync(async (req, res) => {
+router.post('/register', catchAsync(async (req, res) => {
     try {
         const { username, email, password } = req.body;
         const user = new User({ username, email });
@@ -24,4 +24,7 @@ router.post('/', catchAsync(async (req, res) => {
     }
 }))
 
+router.get('/login', (req,res)=>{
+    res.render('../views/user/login', { pageTitle: "Login" })
+})
 module.exports = router;
