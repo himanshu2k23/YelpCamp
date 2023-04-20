@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
 const Review = require('./models/review')
+const User=require('./models/user');
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
 const { campgroundSchema } = require('./schema');
@@ -16,6 +17,8 @@ const campgroundsRoute = require('./routes/campgrounds');
 const reviewRoute = require('./routes/review');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport=require('passport');
+const localStrategy=require('passport-local');
 
 //SESSSION CONFIGRATION
 const sessionConfig = {
@@ -48,10 +51,20 @@ app.set('view engine', 'ejs');
 
 //app.USE
 app.use(session(sessionConfig));
+
 app.use(methodOverride('_method'));
+
 app.use(express.urlencoded({ extends: true }));
 app.use(express.static('./public'));
+
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //FLASH MIDDLEWARE
 app.use((req, res, next) => {
