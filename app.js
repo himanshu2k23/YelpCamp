@@ -1,4 +1,5 @@
 //CONST DECLARATION
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -33,10 +34,11 @@ const sessionConfig = {
     }
 };
 //CONNECTING DATABASE
+console.log(process.env.HIMANSHU)
 console.log({ catchAsync })
 console.log(main());
 async function main() {
-    await mongoose.connect('mongodb+srv://him:himanshu@cluster0.yfpx5hl.mongodb.net/?retryWrites=true&w=majority')
+    await mongoose.connect(process.env.MONGODB_URI)
         .then(() => {
             console.log("DATABASE CONNECTED!!!");
         })
