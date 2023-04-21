@@ -16,8 +16,11 @@ router.post('/register', catchAsync(async (req, res) => {
         const user = new User({ username, email });
         const registerUser = await User.register(user, password);
         //console.log({registerUser});
-        req.flash('success', 'Welcome to yelp camp');
-        res.redirect('/campgrounds');
+        req.login(registerUser, (error)=> {
+            if (error) return next(error); 
+            req.flash('success', 'Welcome to yelp camp');
+            res.redirect('/campgrounds');
+        });
     }
     catch (error) {
         req.flash('error', error.message);
@@ -33,9 +36,8 @@ router.post('/login', passport.authenticate('local', { failureFlash: true, failu
     res.redirect('/campgrounds')
 }))
 router.get('/logout', (req, res) => {
-    req.logout((er) => {
-        if (er)
-            console.log(er);
+    req.logout((error) => {
+        if (error) return next(error);
         req.flash('success', "Logged out");
         res.redirect('/campgrounds');
     })
