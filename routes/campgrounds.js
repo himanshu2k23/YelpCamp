@@ -6,7 +6,7 @@ const Campground = require('../models/campground');
 const {campgroundSchema} =require('../schema');
 const catchAsync = require('../utils/catchAsync');
 const flash = require('connect-flash');
-const isLoggedIn = require('../utils/isLoggedIn');
+const {isLoggedIn} = require('../utils/isLoggedIn');
 
 const validateCampground= (req,res,next)=>{
     //console.log(req.body)
@@ -30,7 +30,7 @@ router.get('/', catchAsync(async (req, res) => {
 router.get('/new',isLoggedIn, (req, res) => {
     res.render('../views/campground/new.ejs', { pageTitle: "Add" })
 })
-router.post('',validateCampground, catchAsync(async (req, res) => {
+router.post('',isLoggedIn,validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)
     const newCampground = new Campground(req.body.campground);
     await newCampground.save();
@@ -51,7 +51,7 @@ router.get('/:id', catchAsync(async (req, res) => {
 }))
 
 //EDIT 
-router.get('/:id/edit', catchAsync(async (req, res, next) => {
+router.get('/:id/edit',isLoggedIn, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     if (!campground) {
@@ -60,7 +60,7 @@ router.get('/:id/edit', catchAsync(async (req, res, next) => {
     }
     res.render('../views/campground/edit.ejs', { campground, pageTitle: "Edit" })
 }))
-router.patch('/:id/edit',validateCampground, catchAsync(async (req, res) => {
+router.patch('/:id/edit',isLoggedIn,validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)
     const { id } = req.params;
     const newCampground = await Campground.findByIdAndUpdate(id, req.body.campground);
