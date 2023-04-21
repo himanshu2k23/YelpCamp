@@ -68,6 +68,10 @@ passport.deserializeUser(User.deserializeUser());
 
 //FLASH MIDDLEWARE
 app.use((req, res, next) => {
+    if (!['/login', '/register', '/'].includes(req.originalUrl)) {
+        console.log(req.originalUrl);
+        req.session.returnTo = req.originalUrl;
+    }
     res.locals.currentUser= req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
