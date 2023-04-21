@@ -6,6 +6,7 @@ const Campground = require('../models/campground');
 const {campgroundSchema} =require('../schema');
 const catchAsync = require('../utils/catchAsync');
 const flash = require('connect-flash');
+const isLoggedIn = require('../utils/isLoggedIn');
 
 const validateCampground= (req,res,next)=>{
     //console.log(req.body)
@@ -26,7 +27,7 @@ router.get('/', catchAsync(async (req, res) => {
 }))
 
 //POST
-router.get('/new', (req, res) => {
+router.get('/new',isLoggedIn, (req, res) => {
     res.render('../views/campground/new.ejs', { pageTitle: "Add" })
 })
 router.post('',validateCampground, catchAsync(async (req, res) => {
@@ -68,7 +69,7 @@ router.patch('/:id/edit',validateCampground, catchAsync(async (req, res) => {
 }))
 
 //DELETE
-router.delete('/:id/delete', catchAsync(async (req, res) => {
+router.delete('/:id/delete',isLoggedIn, catchAsync(async (req, res) => {
     //console.log(req.body)
     const { id } = req.params;
     const newCampground = await Campground.findByIdAndDelete(id);
