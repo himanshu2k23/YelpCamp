@@ -69,8 +69,9 @@ passport.deserializeUser(User.deserializeUser());
 //FLASH MIDDLEWARE
 app.use((req, res, next) => {
     if (!['/login', '/register', '/'].includes(req.originalUrl)) {
-        console.log(req.originalUrl);
-        req.session.returnTo = req.originalUrl;
+        //console.log(req.originalUrl);
+        req.session.returnTo= req.originalUrl;
+        //console.log(req.session.returnTo);
     }
     res.locals.currentUser= req.user;
     res.locals.success = req.flash('success');
@@ -78,7 +79,7 @@ app.use((req, res, next) => {
     next();
 })
 
-//CALLING ROUTES
+//CALLING ROUTE
 app.use('/campgrounds', campgroundsRoute);
 app.use('/campgrounds/:id/review', reviewRoute);
 app.use('/', userRoute);

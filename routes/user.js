@@ -7,6 +7,8 @@ const { userSchema } = require('../schema');
 const catchAsync = require('../utils/catchAsync');
 const flash = require('connect-flash');
 const passport = require('passport');
+const session = require('express-session');
+
 
 router.get('/register', (req, res) => {
     res.render('../views/user/register', { pageTitle: "Register" })
@@ -31,11 +33,11 @@ router.post('/register', catchAsync(async (req, res) => {
 router.get('/login', (req, res) => {
     res.render('../views/user/login', { pageTitle: "Login" })
 })
-router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), catchAsync(async (req, res) => {
+router.post('/login',storeReturnTo, passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), catchAsync(async (req, res) => {
     req.flash('success', "Welcome Back!");
-    //console.log(req.session.returnTo);
-    //const redirectUrl = res.locals.returnTo || '/campgrounds';
-    res.redirect('/campgrounds');
+    //console.log(res.locals.returnTo );
+    const redirectUrl = res.locals.returnTo || '/campgrounds';
+    res.redirect(redirectUrl);
 }))
 router.get('/logout', (req, res) => {
     req.logout((error) => {
