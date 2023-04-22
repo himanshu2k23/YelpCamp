@@ -1,4 +1,4 @@
-const {storeReturnTo} = require('../utils//isLoggedIn');
+const {storeReturnTo} = require('../utils/middleware');
 const express = require('express');
 const router = express.Router();
 const ExpressError = require('../utils/ExpressError');

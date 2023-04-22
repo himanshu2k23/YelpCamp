@@ -6,7 +6,7 @@ const Campground = require('../models/campground');
 const {campgroundSchema} =require('../schema');
 const catchAsync = require('../utils/catchAsync');
 const flash = require('connect-flash');
-const {isLoggedIn} = require('../utils/isLoggedIn');
+const {isLoggedIn} = require('../utils/middleware');
 
 const validateCampground= (req,res,next)=>{
     //console.log(req.body)
@@ -33,6 +33,7 @@ router.get('/new',isLoggedIn, (req, res) => {
 router.post('',isLoggedIn,validateCampground, catchAsync(async (req, res) => {
     //console.log(req.body)
     const newCampground = new Campground(req.body.campground);
+    newCampground.author = req.user._id;
     await newCampground.save();
     req.flash('success','Successfully added a new campground');
     res.redirect(`/campgrounds/${newCampground._id}`);
