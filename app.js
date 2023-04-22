@@ -33,6 +33,7 @@ const sessionConfig = {
     }
 };
 //CONNECTING DATABASE
+mongoose.set('strictQuery', false);
 console.log(main());
 async function main() {
     await mongoose.connect(process.env.MONGODB_URI)

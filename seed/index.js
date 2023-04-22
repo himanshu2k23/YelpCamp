@@ -1,4 +1,6 @@
 //VARIABLE DECLARATION
+require('dotenv').config();
+console.log(process.env.MONGODB_URI);
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -9,9 +11,10 @@ const { places,descriptors }= require(path.join(__dirname,'/seedhelpers.js'));
 //console.log({places,descriptors});
 const Campground = require(path.join(__dirname, '../models/campground'));
 //CONNECTING DATABASE
+mongoose.set('strictQuery', false);
 console.log(main());
 async function main() {
-    await mongoose.connect('mongodb+srv://him:himanshu@cluster0.yfpx5hl.mongodb.net/?retryWrites=true&w=majority')
+    await mongoose.connect(process.env.MONGODB_URI)
         .then(() => {
             console.log("DATABASE CONNECTED!!!")
         })
@@ -29,6 +32,7 @@ const seedDB = async () => {
     for (let i = 0; i < 10; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const camp = new Campground({
+            author:'64439d9f1300686e0f15c1fb',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             img:'http://source.unsplash.com/collection/483251',
