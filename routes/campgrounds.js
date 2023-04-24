@@ -3,28 +3,16 @@ const express = require('express');
 const router = express.Router();
 const Campground = require('../models/campground');
 const catchAsync = require('../utils/catchAsync');
+const campgroundControllers=require('../controllers/campground')
 const {isLoggedIn,isAuthor,validateCampground} = require('../utils/middleware');
 
 
-
 //INDEX
-router.get('/', catchAsync(async (req, res) => {
-    const campgrounds = await Campground.find({});
-    res.render('../views/campground/index.ejs', { campgrounds, pageTitle: "Index" })
-}))
+router.get('/', catchAsync(campgroundControllers.renderIndex))
 
 //POST
-router.get('/new',isLoggedIn, (req, res) => {
-    res.render('../views/campground/new.ejs', { pageTitle: "Add" })
-})
-router.post('',isLoggedIn,validateCampground, catchAsync(async (req, res) => {
-    //console.log(req.body)
-    const newCampground = new Campground(req.body.campground);
-    newCampground.author = req.user._id;
-    await newCampground.save();
-    req.flash('success','Successfully added a new campground');
-    res.redirect(`/campgrounds/${newCampground._id}`);
-}))
+router.get('/new',isLoggedIn, campgroundControllers.renderPostForm)
+router.post('',isLoggedIn,validateCampground, catchAsync(campgroundControllers.postCampground))
 
 //DETAILS
 router.get('/:id', catchAsync(async (req, res) => {
