@@ -19,4 +19,39 @@ module.exports.postCampground=async (req, res) => {
     res.redirect(`/campgrounds/${newCampground._id}`);
 }
 
+module.exports.renderDetails=async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id).populate({path:'reviews',populate:{ path:'author'}}).populate('author');
+    //console.log(campground);
+    if (!campground) {
+        req.flash('error','Campground not found');
+        res.redirect('/campgrounds')        
+    }
+    res.render('../views/campground/details.ejs', { campground, pageTitle: "Details" })
+}
 
+module.exports.renderEditForm=async (req, res, next) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    if (!campground) {
+        req.flash('error','Campground not found');
+        res.redirect('/campgrounds')        
+    }
+    res.render('../views/campground/edit.ejs', { campground, pageTitle: "Edit" })
+}
+
+module.exports.patchCampground=async (req, res) => {
+    //console.log(req.body)
+    const { id } = req.params;
+    const newCampground = await Campground.findByIdAndUpdate(id, req.body.campground);
+    req.flash('success','Successfully made changes in the campground');
+    res.redirect(`/campgrounds/${newCampground._id}`);
+}
+
+module.exports.deleteCampground=async (req, res) => {
+    //console.log(req.body)
+    const { id } = req.params;
+    const newCampground = await Campground.findByIdAndDelete(id);
+    req.flash('success','Campground deleted');
+    res.redirect(`/campgrounds`);
+}
