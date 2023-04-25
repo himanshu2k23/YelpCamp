@@ -10,11 +10,14 @@ const passport = require('passport');
 const session = require('express-session');
 const userControllers=require('../controllers/user')
 
+router.route('/register')
+.get(userControllers.renderRegisterationForm)
+.post( catchAsync(userControllers.registerUser))
 
-router.get('/register',userControllers.renderRegisterationForm)
-router.post('/register', catchAsync(userControllers.registerUser))
-router.get('/login', userControllers.renderLogInForm )
-router.post('/login',storeReturnTo, passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), catchAsync(userControllers.logInUser))
+router.route('/login')
+.get( userControllers.renderLogInForm )
+.post(storeReturnTo, passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), catchAsync(userControllers.logInUser))
+
 router.get('/logout', userControllers.logOutUser)
 
 module.exports = router;
