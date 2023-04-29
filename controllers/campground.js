@@ -13,6 +13,7 @@ module.exports.renderPostForm= (req, res) => {
 module.exports.postCampground=async (req, res) => {
     //console.log(req.body)
     const newCampground = new Campground(req.body.campground);
+    newCampground.images= req.files.map(f=>({url:f.path,name:f.name}))
     newCampground.author = req.user._id;
     await newCampground.save();
     req.flash('success','Successfully added a new campground');

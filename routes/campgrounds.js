@@ -18,11 +18,8 @@ router.get('/', catchAsync(campgroundControllers.renderIndex))
 
 //POST
 router.get('/new',isLoggedIn, campgroundControllers.renderPostForm)
-//router.post('/',isLoggedIn,validateCampground, catchAsync(campgroundControllers.postCampground))
-router.post('/',upload.array('image'), (req,res)=>{
-    console.log(req.body,req.files)
-    res.send("WORKED")
-})
+router.post('/',isLoggedIn,upload.array('image'),validateCampground, catchAsync(campgroundControllers.postCampground))
+
 //DETAILS
 router.get('/:id', catchAsync(campgroundControllers.renderDetails))
 
