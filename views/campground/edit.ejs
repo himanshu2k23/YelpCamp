@@ -33,7 +33,7 @@
                         <div class="input-group-text">
                             <label class="mb-auto" for="image-<%= i %>">Delete</label>
                           <input class="form-check-input mb-auto p-2" type="checkbox" value="<%= img.name %>" id="image-<%= i %>" name="imagesToDelete[]" aria-label="Checkbox for deleting images">
-                          <img class="d-flex p-1 img-thumbnail" src="<%= img.url %>" alt="">
+                          <img class="d-flex p-1 img-thumbnail" src="<%= (img.url).replace('/upload','/upload/w_200') %>" alt="">
                         </div>
                     </div>
                     <% }) %>
