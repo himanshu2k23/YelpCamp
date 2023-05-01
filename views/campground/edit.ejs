@@ -27,6 +27,18 @@
                 <input class="form-control form-control-sm" name="image" id="image" type="file" multiple>
             </div>
 
+            <div class="my-1">
+                <% campground.images.forEach( function(img,i){ %>
+                    <div class="input-group mb-3">
+                        <div class="input-group-text">
+                            <label class="mb-auto" for="image-<%= i %>">Delete</label>
+                          <input class="form-check-input mb-auto p-2" type="checkbox" value="<%= img.name %>" id="image-<%= i %>" name="imagesToDelete[]" aria-label="Checkbox for deleting images">
+                          <img class="d-flex p-1 img-thumbnail" src="<%= img.url %>" alt="">
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+
             <div class="input-group mt-3 mb-2">
                 <span class="input-group-text" id="basic-addon1">$</span>
                 <input name="campground[price]" type="text" class="form-control" placeholder="0.00" aria-label="Price" aria-describedby="basic-addon1" value="<%= campground.price %>" required>
