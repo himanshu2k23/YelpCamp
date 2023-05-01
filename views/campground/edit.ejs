@@ -5,7 +5,7 @@
         Edit Campground
     </h1>
     <div class="col-6 offset-3">
-        <form method="post" action="/campgrounds/<%= campground._id  %>/edit?_method=patch" class="needs-validation" novalidate >
+        <form method="post" action="/campgrounds/<%= campground._id  %>/edit?_method=patch" class="needs-validation" novalidate enctype="multipart/form-data">
             <div class="my-1">
                 <label class="form-label" for="title">Title</label>
                 <input class="form-control" type="text" id="title" name="campground[title]" placeholder="" value="<%= campground.title %>" required>
@@ -23,11 +23,8 @@
             </div>
 
             <div class="my-1">
-                <label class="form-label" for="img">Image URL</label>
-                <input class="form-control" type="text" id="img" name="campground[img]" placeholder="" value="<%= campground.img %>" required>
-                <div class="valid-feedback">
-                    Look Good!
-                </div>
+                <label for="image">Add images</label>
+                <input type="file" name="image" id="image" multiple>
             </div>
 
             <div class="input-group mt-3 mb-2">

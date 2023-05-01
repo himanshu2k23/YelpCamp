@@ -1,3 +1,4 @@
+const campground = require('../models/campground');
 const Campground = require('../models/campground');
 
 
@@ -45,6 +46,9 @@ module.exports.patchCampground=async (req, res) => {
     //console.log(req.body)
     const { id } = req.params;
     const newCampground = await Campground.findByIdAndUpdate(id, req.body.campground);
+    const imgs = req.files.map(f=>({url:f.path,name:f.name}));
+    newCampground.images.push(...imgs);
+    await newCampground.save();
     req.flash('success','Successfully made changes in the campground');
     res.redirect(`/campgrounds/${newCampground._id}`);
 }

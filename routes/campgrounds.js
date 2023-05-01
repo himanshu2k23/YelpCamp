@@ -26,7 +26,7 @@ router.get('/:id', catchAsync(campgroundControllers.renderDetails))
 //EDIT 
 router.route('/:id/edit')
 .get(isLoggedIn,isAuthor, catchAsync(campgroundControllers.renderEditForm))
-.patch(isLoggedIn,isAuthor, validateCampground, catchAsync(campgroundControllers.patchCampground))
+.patch(isLoggedIn,isAuthor,upload.array('image'), validateCampground, catchAsync(campgroundControllers.patchCampground))
 
 //DELETE
 router.delete('/:id/delete',isLoggedIn,isAuthor, catchAsync(campgroundControllers.deleteCampground))
